@@ -132,9 +132,10 @@ def run_agent(q, context):
     # agent_chain = initialize_agent(tools, llm, agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
     # Have model summarize previous messages
+    summary = ""
     if len(context) > 0:
         llm_context = []
-        llm_context.append(HumanMessage(content="Please summarize the following conversation in one sentence:"))
+        llm_context.append(HumanMessage(content="Please summarize the following conversation in one to three sentences:"))
         for message in context:
             if message[0] == 'user':
                 llm_context.append(HumanMessage(content=message[1]))
@@ -154,7 +155,7 @@ def run_agent(q, context):
     for uuid, link in links.items():
         output = output.replace(uuid, link)
     print(output)
-    return output
+    return output, summary
 
 
 # Run test of agent

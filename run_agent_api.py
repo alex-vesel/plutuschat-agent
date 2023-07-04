@@ -12,7 +12,7 @@ from time import sleep
 
 app = FastAPI()
 
-DEBUG = True
+DEBUG = False
 
 @app.get("/query")
 def query(q: str, context: str = "[]") -> dict:
@@ -25,8 +25,8 @@ def query(q: str, context: str = "[]") -> dict:
         # message = "FRGI experienced a decline in its stock prices in 2016. The high and low closing prices of FRGI's common stock for 2016 were as follows:\n- First Quarter: High of $66.99 and Low of $55.32.\n- Second Quarter: High of $62.32 and Low of $46.45.\n- Third Quarter: High of $58.47 and Low of $46.35.\n- Fourth Quarter: High of $45.71 and Low of $32.01.\n\nFRGI did not pay any cash dividends in 2015 or 2014 and does not anticipate paying any cash dividends in the foreseeable future. [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]\n\nSelected financial data for FRGI in 2016:\n- Net cash provided from operating activities: $81,352,000.\n- Net cash used for investing activities: ($87,671,000).\n- Net cash provided by (used for) financing activities: $6,513,000.\n- Total capital expenditures: ($87,570,000).\n- Total assets: $415,645,000.\n- Working capital: ($15,067,000). [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]\n\nPlease note that historical results are not necessarily indicative of future results. [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]"
         # message = "Restoration Hardware has multiple credit facilities including an asset based credit facility and term loan credit agreements. The ABL Credit Agreement was amended on July 29, 2021, providing a revolving line of credit with initial availability of up to $600 million and includes an accordion feature which may be expanded up to $900 million. The Credit Agreement established a $80 million last-in, last-out term loan facility. As of January 29, 2022, the asset based credit facility has deferred financing fees of $4.1 million and the term loan credit agreement has outstanding amounts of $2.0 billion. Additionally, the company has equipment promissory notes outstanding with payments due in fiscal 2023. Overall, Restoration Hardware's balance sheets show significant debt and credit facilities to manage their operations."
     else:
-        message = run_agent(q, context)
-    return {"message": message}
+        message, summary = run_agent(q, context)
+    return {"message": message, "summary": summary}
 
 
 
