@@ -2,6 +2,8 @@ import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 
+from parameters import DB_HOST
+
 class SearchAPI():
     def __init__(self, search_query):
         self.search_query = search_query
@@ -12,7 +14,7 @@ class SearchAPI():
 
         :return:
         """
-        r = requests.post('http://localhost:9091/search', params={'q': str(question), 'sentences': sentences, 'ticker_list': ticker_list, 'date_start': date_start, 'date_end': date_end, 'max_results': max_results})
+        r = requests.post(f'http://{DB_HOST}:9091/search', params={'q': str(question), 'sentences': sentences, 'ticker_list': ticker_list, 'date_start': date_start, 'date_end': date_end, 'max_results': max_results})
         if r.status_code == 200:
             return r.json()['results']
         else:
@@ -23,7 +25,7 @@ class SearchAPI():
 
         :return:
         """
-        r = requests.post('http://localhost:9091/getreferences', params={'uuids': uuids})
+        r = requests.post(f'http://{DB_HOST}:9091/getreferences', params={'uuids': uuids})
         if r.status_code == 200:
             return r.json()['results']
         else:

@@ -12,7 +12,7 @@ from time import sleep
 
 app = FastAPI()
 
-DEBUG = False
+DEBUG = True
 
 @app.get("/query")
 def query(q: str, context: str = "[]") -> dict:
@@ -20,6 +20,7 @@ def query(q: str, context: str = "[]") -> dict:
     # dejsonify context
     context = json.loads(context)
     if DEBUG:
+        summary = "test"
         # sleep(10)
         message = "Based on the available information, it does not appear that the debt of FRGI (Fiesta Restaurant Group) in 2016 is explicitly stated. The financial data from the selected consolidated financial statements for each of the years ending on January 3, 2016, and December 28, 2014, shows figures such as net cash provided from operating activities, net cash used for investing activities, net cash provided by (used for) financing activities, and total capital expenditures, but does not provide specific details about the debt. The balance sheet data also does not explicitly state the debt amount for 2016. Additional information or specific disclosures regarding the debt of FRGI in 2016 may be needed. [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm] [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm] [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm] [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]"
         # message = "FRGI experienced a decline in its stock prices in 2016. The high and low closing prices of FRGI's common stock for 2016 were as follows:\n- First Quarter: High of $66.99 and Low of $55.32.\n- Second Quarter: High of $62.32 and Low of $46.45.\n- Third Quarter: High of $58.47 and Low of $46.35.\n- Fourth Quarter: High of $45.71 and Low of $32.01.\n\nFRGI did not pay any cash dividends in 2015 or 2014 and does not anticipate paying any cash dividends in the foreseeable future. [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]\n\nSelected financial data for FRGI in 2016:\n- Net cash provided from operating activities: $81,352,000.\n- Net cash used for investing activities: ($87,671,000).\n- Net cash provided by (used for) financing activities: $6,513,000.\n- Total capital expenditures: ($87,570,000).\n- Total assets: $415,645,000.\n- Working capital: ($15,067,000). [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]\n\nPlease note that historical results are not necessarily indicative of future results. [https://www.sec.gov/Archives/edgar/data/1534992/000153499216000043/frgi-20150103x10k.htm]"
