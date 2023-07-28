@@ -27,20 +27,20 @@ os.environ["OPENAI_API_KEY"] = "sk-4L60ObN3qpEl5fzZG8JMT3BlbkFJuo66Ev19kYQ3quIzW
 uuid_pattern = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 
 class GetDocumentsArgs(BaseModel):
-    question: str = Field(description="A question or statement about a company's financial documents or news.")
+    question: str = Field(description="A question or statement about a company's SEC financial documents.")
     sentences: Optional[list] = Field(description="A list of related setences to help narrow down the search. REQUIRED argument.")
     # forms: list = Field(description="A list of SEC forms to search for. Include empty list to search all forms.")
-    ticker_list: list = Field(description="A list of tickers to search for. Empty list will search all tickers.")
-    date_start: str = Field(description="The start date of the search. Format is YYYY-MM-DD.")
-    date_end: str = Field(description="The end date of the search. Format is YYYY-MM-DD.")
-    max_results: int = Field(description="The maximum number of results to return.")
+    ticker_list: Optional[list] = Field(description="A list of tickers to search for. Empty list will search all tickers.")
+    date_start: Optional[str] = Field(description="The start date of the search. Format is YYYY-MM-DD.")
+    date_end: Optional[str] = Field(description="The end date of the search. Format is YYYY-MM-DD.")
+    max_results: Optional[int] = Field(description="The maximum number of results to return.")
      
 
 tools = [
     StructuredTool(
         name = "GetDocuments",
         func=SearchAPI.get_documents,
-        description="Returns specific information from financial documents such as SEC filings, earnings calls, and news reports. Don't use unless you don't know.",
+        description="Returns specific information from financial documents such as SEC filings, earnings calls, and news reports. Not useful for general questions where a company or sector are not specified.",
         args_schema=GetDocumentsArgs,
     ),
 ]
@@ -151,10 +151,13 @@ def run_agent(q, context):
     uuids = re.findall(uuid_pattern, output)
     links = SearchAPI.get_references(uuids)
     # Replace UUIDs with links
-    output = output.replace(r"[UUID: ", r"[")
+    output = output.replace(r"[UUID: ", r"[").replace(r"[$UUID: ", r"[").replace(r"[UUID:", r"[")
+    output = re.sub(r'\[METADATA: [^\]]+\]', "", output)
+  #  for uuid in uuids:
+   #     output = output.replace(f"[{uuid}]", "")
     for uuid, link in links.items():
         output = output.replace(uuid, link)
-    print(output)
+ #   print(output)
     return output, summary
 
 

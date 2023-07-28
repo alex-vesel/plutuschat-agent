@@ -9,10 +9,11 @@ from LangchainAgent import run_agent
 from typing import List
 import json
 from time import sleep
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-DEBUG = True
+DEBUG = False
 
 @app.get("/query")
 def query(q: str, context: str = "[]") -> dict:
@@ -28,7 +29,6 @@ def query(q: str, context: str = "[]") -> dict:
     else:
         message, summary = run_agent(q, context)
     return {"message": message, "summary": summary}
-
 
 
 if __name__ == '__main__':

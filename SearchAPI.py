@@ -14,6 +14,7 @@ class SearchAPI():
 
         :return:
         """
+        print('get docs')
         r = requests.post(f'http://{DB_HOST}:9091/search', params={'q': str(question), 'sentences': sentences, 'ticker_list': ticker_list, 'date_start': date_start, 'date_end': date_end, 'max_results': max_results})
         if r.status_code == 200:
             return r.json()['results']
