@@ -1,6 +1,8 @@
 # params file
 
-DEBUG = False
+DEBUG = True
+
+OPENAI_SK = ""
 
 if DEBUG:
     DB_HOST = 'localhost'

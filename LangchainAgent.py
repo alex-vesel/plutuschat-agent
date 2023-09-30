@@ -21,8 +21,9 @@ from langchain.agents.structured_chat.output_parser import (
 from langchain.callbacks import get_openai_callback
 from langchain.callbacks.base import BaseCallbackHandler
 from typing import Any
+from parameters import OPENAI_SK
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = OPENAI_SK
 
 uuid_pattern = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 
@@ -133,6 +134,7 @@ def run_agent(q, context):
 
     # Have model summarize previous messages
     summary = ""
+    print("Context: ", context)
     if len(context) > 0:
         llm_context = []
         llm_context.append(HumanMessage(content="Please summarize the following conversation in one to three sentences:"))
@@ -143,7 +145,6 @@ def run_agent(q, context):
                 llm_context.append(SystemMessage(content=message[1]))
         summary = llm(llm_context).content
         q = "Conversation summary: " + summary + "\n" + "New message: " + q
-    print(q)
     # Run agent
     output = agent_executor.run(q, callbacks=[CustomCallback()])
 
